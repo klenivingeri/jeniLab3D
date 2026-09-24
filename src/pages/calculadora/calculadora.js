@@ -851,7 +851,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
                     body { font-family: Arial, Helvetica, sans-serif; color: #111; padding: 48px; max-width: 760px; margin: 0 auto; }
                     .cabecalho { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #111; padding-bottom: 16px; margin-bottom: 24px; }
                     .logo { font-size: 22px; font-weight: 900; }
-                    .logo span { color: #06b6d4; }
+                    .logo span { color: #8b5cf6; }
                     .cabecalho-direita { text-align: right; }
                     .cabecalho-direita h1 { font-size: 26px; margin: 0; letter-spacing: 0.02em; }
                     .cabecalho-direita p { margin: 4px 0 0; font-size: 12px; color: #555; }

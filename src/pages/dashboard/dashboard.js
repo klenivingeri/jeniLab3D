@@ -3,10 +3,10 @@ import { state } from '../../core/state.js';
 import { Chart } from 'chart.js/auto';
 
 const MESES_ABREV = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-const COR_ACCENT = '#06b6d4';
+const COR_ACCENT = '#8b5cf6';
 const COR_GRID = 'rgba(255,255,255,0.06)';
 const COR_TEXTO = '#9ca3af';
-const CORES_PIZZA = ['#06b6d4', '#a855f7', '#f59e0b', '#22c55e', '#ef4444', '#3b82f6', '#ec4899'];
+const CORES_PIZZA = ['#8b5cf6', '#06b6d4', '#f59e0b', '#22c55e', '#ef4444', '#3b82f6', '#ec4899'];
 
 function pad2(n) {
     return String(n).padStart(2, '0');
