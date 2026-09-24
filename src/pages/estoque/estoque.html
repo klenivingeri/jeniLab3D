@@ -16,3 +16,26 @@
         <!-- Tabela de estoque injetada via JS -->
     </div>
 </div>
+
+<div id="estoque-modal-excluir" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-red-500/30 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+            <span>Excluir item do estoque</span>
+        </h3>
+        <p class="text-xs text-gray-400 leading-relaxed">
+            Essa ação é permanente e pode afetar cálculos que usam este item. Para confirmar, digite <strong class="text-red-400">DELETAR</strong> no campo abaixo.
+        </p>
+        <input
+            id="estoque-confirma-input"
+            type="text"
+            placeholder="Digite DELETAR"
+            autocomplete="off"
+            class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-400"
+        />
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="estoque-modal-cancelar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="estoque-modal-confirmar" disabled class="px-4 py-2 bg-red-500/30 text-red-300 font-bold rounded-xl text-xs cursor-not-allowed transition">Confirmar Exclusão</button>
+        </div>
+    </div>
+</div>

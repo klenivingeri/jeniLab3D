@@ -54,8 +54,3 @@ export function saveHistorico() {
 export function saveGaleria() {
     localStorage.setItem(STORAGE_KEYS.galeria, JSON.stringify(state.galeria));
 }
-
-export function clearPedidos() {
-    state.pedidos = [];
-    localStorage.removeItem(STORAGE_KEYS.pedidos);
-}

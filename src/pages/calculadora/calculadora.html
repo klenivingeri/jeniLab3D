@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
     <!-- Coluna de Parâmetros -->
-    <div class="lg:col-span-7 bg-darkcard border border-gray-800 rounded-2xl p-6 shadow-xl space-y-6">
-        <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+    <div class="lg:col-span-7 bg-darkcard border border-gray-800 rounded-2xl p-4 sm:p-6 shadow-xl space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800 pb-4">
             <h2 class="text-lg font-bold flex items-center space-x-2">
                 <i class="fa-solid fa-sliders text-accent"></i>
                 <span>PARÂMETROS DE IMPRESSÃO</span>
@@ -12,7 +12,7 @@
         </div>
 
         <!-- Abas -->
-        <div class="flex border-b border-gray-800">
+        <div class="flex overflow-x-auto border-b border-gray-800">
             <button type="button" data-tab-calc="pedido" class="calc-tab-btn px-4 py-2.5 text-xs font-bold uppercase tracking-wide border-b-2 transition flex items-center space-x-1.5">
                 <i class="fa-solid fa-cube"></i><span>Pedido</span>
             </button>
@@ -72,12 +72,14 @@
             <!-- Seleção de Insumos Extras do Estoque (Chaveiros, Embalagens, etc.) -->
             <div class="bg-darkbg/50 border border-gray-800 p-4 rounded-xl space-y-3">
                 <label class="block text-xs uppercase font-semibold text-accent"><i class="fa-solid fa-box-archive"></i> Adicionar Insumos do Estoque (Chaveiro, Embalagem, etc.)</label>
-                <div class="flex gap-2">
+                <div class="flex flex-col sm:flex-row gap-2">
                     <select id="calc-insumo-select" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
                         <option value="">-- Selecionar Insumo --</option>
                     </select>
-                    <input type="number" id="calc-insumo-qtd" value="1" min="1" class="w-20 bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm text-center">
-                    <button id="calc-add-insumo" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition">Adicionar</button>
+                    <div class="flex gap-2">
+                        <input type="number" id="calc-insumo-qtd" value="1" min="1" class="w-20 flex-shrink-0 bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm text-center">
+                        <button id="calc-add-insumo" class="flex-shrink-0 px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition">Adicionar</button>
+                    </div>
                 </div>
                 <!-- Lista de Insumos Vinculados -->
                 <div id="lista-insumos-vinculados" class="space-y-2 pt-2">
@@ -198,7 +200,7 @@
     </div>
 
     <!-- Coluna de Resultado -->
-    <div class="lg:col-span-5 bg-darkcard border border-gray-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+    <div class="lg:col-span-5 bg-darkcard border border-gray-800 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col justify-between">
         <div>
             <h3 class="text-sm uppercase tracking-wider text-gray-400 font-bold mb-6 border-b border-gray-800 pb-3 flex items-center justify-between">
                 <span>Resumo do Orçamento</span>

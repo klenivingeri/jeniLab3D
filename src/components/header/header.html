@@ -1,8 +1,8 @@
-<header class="border-b border-gray-800 bg-darkcard/50 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-            <span class="text-xl font-black tracking-wider text-white">JeniLab <span class="text-accent">3D</span></span>
-            <span class="text-xs px-2 py-0.5 rounded bg-accent/10 text-accent font-semibold border border-accent/20">BAMBU A1 EDITION</span>
+<header class="border-b border-gray-800 bg-darkcard sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+        <div class="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            <span class="text-lg sm:text-xl font-black tracking-wider text-white whitespace-nowrap">JeniLab <span class="text-accent">3D</span></span>
+            <span class="hidden sm:inline text-xs px-2 py-0.5 rounded bg-accent/10 text-accent font-semibold border border-accent/20 whitespace-nowrap">BAMBU A1 EDITION</span>
         </div>
 
         <nav class="hidden md:flex items-center space-x-1">
@@ -26,8 +26,32 @@
             </button>
         </nav>
 
-        <div class="flex items-center space-x-3">
-            <span class="text-xs px-3 py-1 rounded bg-gray-800 text-gray-300 border border-gray-700 font-mono">BR BRL (R$)</span>
+        <div class="flex items-center space-x-2 sm:space-x-3">
+            <span class="hidden sm:inline text-xs px-3 py-1 rounded bg-gray-800 text-gray-300 border border-gray-700 font-mono">BR BRL (R$)</span>
+            <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg text-gray-300 hover:bg-gray-800 transition" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
         </div>
     </div>
+
+    <nav id="mobile-menu" class="md:hidden hidden flex-col border-t border-gray-800 bg-darkcard/95 px-4 py-3 space-y-1">
+        <button data-tab="calc" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 bg-accent/20 text-accent border border-accent/30">
+            <i class="fa-solid fa-calculator w-4"></i><span>NOVO PEDIDO</span>
+        </button>
+        <button data-tab="galeria" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-images w-4"></i><span>GALERIA</span>
+        </button>
+        <button data-tab="acompanhamento" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-clock-rotate-left w-4"></i><span>ACOMPANHAMENTO</span>
+        </button>
+        <button data-tab="historico" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-box-archive w-4"></i><span>PEDIDOS</span>
+        </button>
+        <button data-tab="estoque" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-boxes-stacked w-4"></i><span>ESTOQUE</span>
+        </button>
+        <button data-tab="ajustes" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-gear w-4"></i><span>AJUSTES</span>
+        </button>
+    </nav>
 </header>

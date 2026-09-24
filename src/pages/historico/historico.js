@@ -16,9 +16,7 @@ export function mountHistoricoPage(container, { onAbrirPedido } = {}) {
     function abrirModalExclusao(id) {
         idPendenteExclusao = id;
         modalTexto.innerHTML =
-            id === 'ALL'
-                ? 'Essa ação vai apagar <strong class="text-red-400">todo</strong> o histórico de vendas permanentemente e pode afetar as métricas usadas para popular os gráficos de vendas. Para confirmar, digite <strong class="text-red-400">DELETAR</strong> no campo abaixo.'
-                : 'Essa ação é permanente e pode afetar as métricas usadas para popular os gráficos de vendas. Para confirmar, digite <strong class="text-red-400">DELETAR</strong> no campo abaixo.';
+            'Essa ação é permanente e pode afetar as métricas usadas para popular os gráficos de vendas. Para confirmar, digite <strong class="text-red-400">DELETAR</strong> no campo abaixo.';
         confirmaInput.value = '';
         confirmaBtn.disabled = true;
         confirmaBtn.classList.add('cursor-not-allowed');
@@ -48,12 +46,7 @@ export function mountHistoricoPage(container, { onAbrirPedido } = {}) {
     confirmaBtn.addEventListener('click', () => {
         if (confirmaInput.value.trim() !== 'DELETAR' || idPendenteExclusao === null) return;
 
-        if (idPendenteExclusao === 'ALL') {
-            state.historico = [];
-        } else {
-            state.historico = state.historico.filter((p) => p.id !== idPendenteExclusao);
-        }
-
+        state.historico = state.historico.filter((p) => p.id !== idPendenteExclusao);
         saveHistorico();
         fecharModalExclusao();
         render();
@@ -110,11 +103,6 @@ export function mountHistoricoPage(container, { onAbrirPedido } = {}) {
     }
 
     buscaEl.addEventListener('input', render);
-
-    container.querySelector('#hist-limpar').addEventListener('click', () => {
-        if (state.historico.length === 0) return;
-        abrirModalExclusao('ALL');
-    });
 
     render();
 

@@ -1,10 +1,55 @@
 import estoqueHtml from './estoque.html?raw';
 import { state, saveEstoque } from '../../core/state.js';
 
-export function mountEstoquePage(container, { onAbrirModal }) {
+export function mountEstoquePage(container, { onAbrirModal, onEditarItem }) {
     container.innerHTML = estoqueHtml;
 
     const tabelaContainer = container.querySelector('#tabela-estoque-container');
+    const modalExcluir = container.querySelector('#estoque-modal-excluir');
+    const confirmaInput = container.querySelector('#estoque-confirma-input');
+    const confirmaBtn = container.querySelector('#estoque-modal-confirmar');
+
+    let idPendenteExclusao = null;
+
+    function abrirModalExclusao(id) {
+        idPendenteExclusao = id;
+        confirmaInput.value = '';
+        confirmaBtn.disabled = true;
+        confirmaBtn.classList.add('cursor-not-allowed');
+        modalExcluir.classList.remove('hidden');
+        modalExcluir.classList.add('flex');
+        confirmaInput.focus();
+    }
+
+    function fecharModalExclusao() {
+        idPendenteExclusao = null;
+        modalExcluir.classList.remove('flex');
+        modalExcluir.classList.add('hidden');
+    }
+
+    confirmaInput.addEventListener('input', () => {
+        const habilitado = confirmaInput.value.trim() === 'DELETAR';
+        confirmaBtn.disabled = !habilitado;
+        confirmaBtn.classList.toggle('cursor-not-allowed', !habilitado);
+        confirmaBtn.classList.toggle('bg-red-500/30', !habilitado);
+        confirmaBtn.classList.toggle('text-red-300', !habilitado);
+        confirmaBtn.classList.toggle('bg-red-500', habilitado);
+        confirmaBtn.classList.toggle('text-white', habilitado);
+    });
+
+    confirmaInput.addEventListener('keydown', (evt) => {
+        if (evt.key === 'Enter' && confirmaInput.value.trim() === 'DELETAR') confirmaBtn.click();
+    });
+
+    container.querySelector('#estoque-modal-cancelar').addEventListener('click', fecharModalExclusao);
+
+    confirmaBtn.addEventListener('click', () => {
+        if (confirmaInput.value.trim() !== 'DELETAR' || idPendenteExclusao === null) return;
+        state.estoque = state.estoque.filter((i) => i.id !== idPendenteExclusao);
+        saveEstoque();
+        fecharModalExclusao();
+        render();
+    });
 
     function render() {
         if (state.estoque.length === 0) {
@@ -20,42 +65,50 @@ export function mountEstoquePage(container, { onAbrirModal }) {
         }
 
         tabelaContainer.innerHTML = `
-            <table class="w-full text-left border-collapse text-sm">
-                <thead>
-                    <tr class="border-b border-gray-800 bg-darkbg/50 text-gray-400 text-xs uppercase">
-                        <th class="p-4">Item / Material</th>
-                        <th class="p-4">Categoria</th>
-                        <th class="p-4">Qtd Total</th>
-                        <th class="p-4">Custo Total Pago</th>
-                        <th class="p-4 text-right">Ações</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-800">
-                    ${state.estoque
-                        .map(
-                            (item) => `
-                        <tr class="hover:bg-darkbg/30 transition">
-                            <td class="p-4 font-medium text-white">${item.nome}</td>
-                            <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-800 text-gray-300 border border-gray-700">${item.categoria}</span></td>
-                            <td class="p-4 text-gray-300">${item.qtdTotal}${item.categoria === 'Filamento' ? 'g' : 'unidades'}</td>
-                            <td class="p-4 text-accent font-mono">R$ ${item.custoTotal.toFixed(2)}</td>
-                            <td class="p-4 text-right">
-                                <button data-remover-estoque="${item.id}" class="text-gray-500 hover:text-red-400 transition"><i class="fa-solid fa-trash"></i></button>
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm min-w-[640px]">
+                    <thead>
+                        <tr class="border-b border-gray-800 bg-darkbg/50 text-gray-400 text-xs uppercase">
+                            <th class="p-4">Item / Material</th>
+                            <th class="p-4">Categoria</th>
+                            <th class="p-4">Qtd Total</th>
+                            <th class="p-4">Custo Total Pago</th>
+                            <th class="p-4 text-right">Ações</th>
                         </tr>
-                    `
-                        )
-                        .join('')}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-gray-800">
+                        ${state.estoque
+                            .map(
+                                (item) => `
+                            <tr class="hover:bg-darkbg/30 transition">
+                                <td class="p-4 font-medium text-white">${item.nome}</td>
+                                <td class="p-4"><span class="px-2.5 py-1 rounded-full text-xs bg-gray-800 text-gray-300 border border-gray-700">${item.categoria}</span></td>
+                                <td class="p-4 text-gray-300">${item.qtdTotal}${item.categoria === 'Filamento' ? 'g' : 'unidades'}</td>
+                                <td class="p-4 text-accent font-mono">R$ ${item.custoTotal.toFixed(2)}</td>
+                                <td class="p-4 text-right space-x-6 whitespace-nowrap">
+                                    <button data-editar-estoque="${item.id}" class="text-gray-500 hover:text-accent transition"><i class="fa-solid fa-pen"></i></button>
+                                    <button data-remover-estoque="${item.id}" class="text-gray-500 hover:text-red-400 transition"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `
+                            )
+                            .join('')}
+                    </tbody>
+                </table>
+            </div>
         `;
 
         tabelaContainer.querySelectorAll('[data-remover-estoque]').forEach((btn) => {
             btn.addEventListener('click', () => {
-                const id = Number(btn.dataset.removerEstoque);
-                state.estoque = state.estoque.filter((i) => i.id !== id);
-                saveEstoque();
-                render();
+                abrirModalExclusao(Number(btn.dataset.removerEstoque));
+            });
+        });
+
+        tabelaContainer.querySelectorAll('[data-editar-estoque]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const id = Number(btn.dataset.editarEstoque);
+                const item = state.estoque.find((i) => i.id === id);
+                if (item) onEditarItem && onEditarItem(item);
             });
         });
     }

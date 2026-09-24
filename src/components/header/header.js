@@ -7,8 +7,25 @@ export function mountHeader(container, onTabChange) {
     container.innerHTML = headerHtml;
 
     const buttons = Array.from(container.querySelectorAll('.tab-btn'));
+    const mobileMenuBtn = container.querySelector('#mobile-menu-btn');
+    const mobileMenu = container.querySelector('#mobile-menu');
+
+    function fecharMenuMobile() {
+        mobileMenu.classList.add('hidden');
+        mobileMenu.classList.remove('flex');
+    }
+
+    mobileMenuBtn.addEventListener('click', () => {
+        const abrindo = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden', !abrindo);
+        mobileMenu.classList.toggle('flex', abrindo);
+    });
+
     buttons.forEach((btn) => {
-        btn.addEventListener('click', () => onTabChange(btn.dataset.tab));
+        btn.addEventListener('click', () => {
+            onTabChange(btn.dataset.tab);
+            fecharMenuMobile();
+        });
     });
 
     function setActive(tabId) {

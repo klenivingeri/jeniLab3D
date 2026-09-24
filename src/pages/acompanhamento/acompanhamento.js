@@ -1,5 +1,5 @@
 import acompanhamentoHtml from './acompanhamento.html?raw';
-import { state, savePedidos, saveHistorico, clearPedidos } from '../../core/state.js';
+import { state, savePedidos, saveHistorico } from '../../core/state.js';
 
 const COLUNAS = [
     { id: 'Aguardando', titulo: 'Aguardando', cor: 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' },
@@ -46,8 +46,8 @@ export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPe
         listaEl.innerHTML = COLUNAS.map((col) => {
             const pedidosCol = state.pedidos.filter((p) => p.status === col.id);
             return `
-                <div class="bg-darkcard border border-gray-800 rounded-2xl p-4 flex flex-col h-[600px]">
-                    <div class="flex items-center justify-between pb-3 border-b border-gray-800 mb-3 gap-2">
+                <div class="bg-darkcard border border-gray-800 rounded-2xl p-4 flex flex-col h-[420px] md:h-[600px]">
+                    <div class="flex flex-wrap items-center justify-between pb-3 border-b border-gray-800 mb-3 gap-2">
                         <span class="text-xs font-bold uppercase px-3 py-1 rounded-lg border ${col.cor}">${col.titulo}</span>
                         ${
                             col.id === 'Enviado' && pedidosCol.length > 0
@@ -175,13 +175,6 @@ export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPe
             });
         });
     }
-
-    container.querySelector('#acomp-limpar').addEventListener('click', () => {
-        if (confirm('Deseja limpar todos os pedidos de acompanhamento?')) {
-            clearPedidos();
-            render();
-        }
-    });
 
     render();
 

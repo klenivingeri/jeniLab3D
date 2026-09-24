@@ -1,7 +1,7 @@
 <div id="modal-estoque" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-darkcard border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
         <h3 class="text-lg font-bold text-white flex items-center justify-between">
-            <span>Adicionar Item ao Estoque</span>
+            <span id="modal-estoque-titulo">Adicionar Item ao Estoque</span>
             <button id="modal-estoque-close" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </h3>
         <div class="space-y-3">
@@ -29,7 +29,7 @@
         </div>
         <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
             <button id="modal-estoque-cancel" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
-            <button id="modal-estoque-save" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover">Salvar Item</button>
+            <button id="modal-estoque-save" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover"><span id="modal-estoque-save-label">Salvar Item</span></button>
         </div>
     </div>
 </div>

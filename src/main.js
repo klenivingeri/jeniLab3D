@@ -66,6 +66,7 @@ const historicoPage = mountHistoricoPage(pageContainers.historico, {
 
 const estoquePage = mountEstoquePage(pageContainers.estoque, {
     onAbrirModal: () => modalEstoque.open(),
+    onEditarItem: (item) => modalEstoque.open(item),
 });
 
 const ajustesPage = mountAjustesPage(pageContainers.ajustes);
