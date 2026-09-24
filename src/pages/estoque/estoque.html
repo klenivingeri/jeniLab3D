@@ -1,0 +1,18 @@
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-darkcard border border-gray-800 rounded-2xl p-6">
+        <div>
+            <h2 class="text-xl font-bold flex items-center space-x-2">
+                <i class="fa-solid fa-boxes-stacked text-accent"></i>
+                <span>GESTÃO DE ESTOQUE E INSUMOS</span>
+            </h2>
+            <p class="text-xs text-gray-400 mt-1">Cadastre filamentos, correntes, embalagens e outros insumos para vincular aos cálculos.</p>
+        </div>
+        <button id="estoque-novo-item" class="px-4 py-2 bg-accent hover:bg-accenthover text-darkbg font-bold rounded-xl text-xs transition flex items-center space-x-2 shadow-lg shadow-accent/20">
+            <i class="fa-solid fa-plus"></i><span>Novo Item / Carretel</span>
+        </button>
+    </div>
+
+    <div id="tabela-estoque-container" class="bg-darkcard border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+        <!-- Tabela de estoque injetada via JS -->
+    </div>
+</div>

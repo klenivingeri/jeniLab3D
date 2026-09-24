@@ -1,0 +1,26 @@
+.page-content.hidden {
+    display: none;
+}
+
+@keyframes campo-erro-blink {
+    0%,
+    100% {
+        border-color: #ef4444;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.4);
+    }
+    50% {
+        border-color: inherit;
+        box-shadow: none;
+    }
+}
+
+.campo-erro {
+    animation: campo-erro-blink 0.35s ease-in-out 4;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}

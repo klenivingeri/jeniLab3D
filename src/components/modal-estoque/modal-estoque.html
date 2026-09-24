@@ -1,0 +1,35 @@
+<div id="modal-estoque" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center justify-between">
+            <span>Adicionar Item ao Estoque</span>
+            <button id="modal-estoque-close" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </h3>
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome do Item / Filamento / Insumo</label>
+                <input type="text" id="est-nome" placeholder="Ex: Filamento PLA Azul / Corrente Chaveiro" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            </div>
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Categoria</label>
+                <select id="est-cat" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+                    <option value="Filamento">Filamento (Preço por KG)</option>
+                    <option value="Insumo">Insumo Unitário / Pacote (Chaveiro, Embalagem, etc.)</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Qtd Total no Estoque</label>
+                    <input type="number" id="est-qtd" value="1000" step="1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Custo Total Pago (R$)</label>
+                    <input type="number" id="est-custo" value="100" step="0.5" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="modal-estoque-cancel" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="modal-estoque-save" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover">Salvar Item</button>
+        </div>
+    </div>
+</div>
