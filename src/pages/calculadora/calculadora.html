@@ -6,135 +6,193 @@
                 <i class="fa-solid fa-sliders text-accent"></i>
                 <span>PARÂMETROS DE IMPRESSÃO</span>
             </h2>
-            <button id="calc-reset" class="text-xs text-red-400 hover:text-red-300 flex items-center space-x-1">
+            <button id="calc-reset" class="text-xs font-semibold text-red-400 hover:text-red-300 flex items-center justify-center space-x-1.5 transition">
                 <i id="calc-reset-icon" class="fa-solid fa-trash-can"></i><span id="calc-reset-label">Limpar</span>
             </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome do Projeto</label>
-                <input type="text" id="calc-nome" placeholder="Ex: Chaveiro Personalizado" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-            </div>
-            <div>
-                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Qtd</label>
-                <input type="number" id="calc-qtd" value="1" min="1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-            </div>
+        <!-- Abas -->
+        <div class="flex border-b border-gray-800">
+            <button type="button" data-tab-calc="pedido" class="calc-tab-btn px-4 py-2.5 text-xs font-bold uppercase tracking-wide border-b-2 transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-cube"></i><span>Pedido</span>
+            </button>
+            <button type="button" data-tab-calc="cliente" class="calc-tab-btn px-4 py-2.5 text-xs font-bold uppercase tracking-wide border-b-2 transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-user"></i><span>Cliente</span>
+            </button>
+            <button type="button" data-tab-calc="pagamento" class="calc-tab-btn px-4 py-2.5 text-xs font-bold uppercase tracking-wide border-b-2 transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-money-check-dollar"></i><span>Pagamento</span>
+            </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Peso da Peça (g)</label>
-                <input type="number" id="calc-peso" value="0" min="0" step="0.1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-            </div>
-            <div>
-                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Impressão (HH:MM)</label>
-                <input type="text" id="calc-tempo" value="00:00" placeholder="00:00" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
-            </div>
-        </div>
-
-        <!-- Seleção de Filamento do Estoque -->
-        <div class="bg-darkbg/50 border border-gray-800 p-4 rounded-xl space-y-3">
-            <div class="flex justify-between items-center">
-                <label class="block text-xs uppercase font-semibold text-accent"><i class="fa-solid fa-spool"></i> Selecionar Filamento do Estoque</label>
-                <button id="calc-goto-estoque" class="text-xs text-gray-400 hover:text-white underline">Gerenciar Estoque</button>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Aba: Pedido -->
+        <div data-tab-panel-calc="pedido" class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <select id="calc-filamento-select" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
-                        <option value="">-- Usar Custo Padrão / Manual --</option>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome do Projeto</label>
+                    <input type="text" id="calc-nome" placeholder="Ex: Chaveiro Personalizado" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Qtd</label>
+                    <input type="number" id="calc-qtd" value="1" min="1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Peso da Peça (g)</label>
+                    <input type="number" id="calc-peso" value="0" min="0" step="0.1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Impressão (HH:MM)</label>
+                    <input type="text" id="calc-tempo" value="00:00" placeholder="00:00" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
+                </div>
+            </div>
+
+            <!-- Seleção de Filamento do Estoque -->
+            <div class="bg-darkbg/50 border border-gray-800 p-4 rounded-xl space-y-3">
+                <div class="flex justify-between items-center">
+                    <label class="block text-xs uppercase font-semibold text-accent"><i class="fa-solid fa-spool"></i> Selecionar Filamento do Estoque</label>
+                    <button id="calc-goto-estoque" class="text-xs text-gray-400 hover:text-white underline">Gerenciar Estoque</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <select id="calc-filamento-select" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                            <option value="">-- Usar Custo Padrão / Manual --</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-gray-400">Custo KG (R$):</span>
+                            <input type="number" id="calc-custo-kg" value="100" min="0" step="1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent font-mono">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seleção de Insumos Extras do Estoque (Chaveiros, Embalagens, etc.) -->
+            <div class="bg-darkbg/50 border border-gray-800 p-4 rounded-xl space-y-3">
+                <label class="block text-xs uppercase font-semibold text-accent"><i class="fa-solid fa-box-archive"></i> Adicionar Insumos do Estoque (Chaveiro, Embalagem, etc.)</label>
+                <div class="flex gap-2">
+                    <select id="calc-insumo-select" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
+                        <option value="">-- Selecionar Insumo --</option>
                     </select>
+                    <input type="number" id="calc-insumo-qtd" value="1" min="1" class="w-20 bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm text-center">
+                    <button id="calc-add-insumo" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition">Adicionar</button>
                 </div>
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-xs text-gray-400">Custo KG (R$):</span>
-                        <input type="number" id="calc-custo-kg" value="100" min="0" step="1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent font-mono">
+                <!-- Lista de Insumos Vinculados -->
+                <div id="lista-insumos-vinculados" class="space-y-2 pt-2">
+                    <!-- Injetado via JS -->
+                </div>
+            </div>
+
+            <!-- Accordion: Detalhes Avançados -->
+            <div class="border border-gray-800 rounded-xl overflow-hidden">
+                <button type="button" data-accordion-toggle="detalhes" class="w-full flex items-center justify-between px-4 py-3 bg-darkbg/50 hover:bg-darkbg text-left transition">
+                    <span class="text-xs uppercase font-semibold text-gray-300 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-accent"></i>
+                        <span>Detalhes Avançados (Acabamento, Custos, Risco, Lucro)</span>
+                    </span>
+                    <i data-accordion-icon="detalhes" class="fa-solid fa-chevron-down text-gray-500 text-xs transition-transform"></i>
+                </button>
+                <div data-accordion-panel="detalhes" class="hidden px-4 py-4 space-y-4 border-t border-gray-800">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Acabamento (HH:MM)</label>
+                            <input type="text" id="calc-tempo-acabamento" value="00:00" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Outros Custos Manuais (R$)</label>
+                            <input type="number" id="calc-outros" value="0" min="0" step="0.5" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                        </div>
+                    </div>
+
+                    <!-- Risco / Falha -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-gray-400 mb-1">
+                            <span>Risco / Falha de Impressão</span>
+                            <span id="label-risco" class="text-accent">5%</span>
+                        </div>
+                        <input type="range" id="calc-risco" min="0" max="30" value="5" class="w-full accent-accent cursor-pointer">
+                    </div>
+
+                    <!-- Lucro Desejado -->
+                    <div>
+                        <div class="flex justify-between text-xs font-semibold text-gray-400 mb-1">
+                            <span>Lucro Desejado (%)</span>
+                            <span id="label-lucro" class="text-accent">100%</span>
+                        </div>
+                        <input type="range" id="calc-lucro" min="0" max="500" value="100" class="w-full accent-accent cursor-pointer">
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Seleção de Insumos Extras do Estoque (Chaveiros, Embalagens, etc.) -->
-        <div class="bg-darkbg/50 border border-gray-800 p-4 rounded-xl space-y-3">
-            <label class="block text-xs uppercase font-semibold text-accent"><i class="fa-solid fa-box-archive"></i> Adicionar Insumos do Estoque (Chaveiro, Embalagem, etc.)</label>
-            <div class="flex gap-2">
-                <select id="calc-insumo-select" class="w-full bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-accent">
-                    <option value="">-- Selecionar Insumo --</option>
-                </select>
-                <input type="number" id="calc-insumo-qtd" value="1" min="1" class="w-20 bg-darkbg border border-gray-700 rounded-xl px-3 py-2 text-sm text-center">
-                <button id="calc-add-insumo" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold transition">Adicionar</button>
+        <!-- Aba: Cliente -->
+        <div data-tab-panel-calc="cliente" class="hidden space-y-6">
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome do Cliente</label>
+                <input type="text" id="calc-cliente-nome" placeholder="Nome do cliente" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
             </div>
-            <!-- Lista de Insumos Vinculados -->
-            <div id="lista-insumos-vinculados" class="space-y-2 pt-2">
-                <!-- Injetado via JS -->
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Telefone</label>
+                <input type="text" id="calc-cliente-telefone" placeholder="(00) 00000-0000" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
             </div>
-        </div>
 
-        <!-- Accordion: Detalhes Avançados -->
-        <div class="border border-gray-800 rounded-xl overflow-hidden">
-            <button type="button" data-accordion-toggle="detalhes" class="w-full flex items-center justify-between px-4 py-3 bg-darkbg/50 hover:bg-darkbg text-left transition">
-                <span class="text-xs uppercase font-semibold text-gray-300 flex items-center space-x-2">
-                    <i class="fa-solid fa-sliders text-accent"></i>
-                    <span>Detalhes Avançados (Acabamento, Custos, Risco, Lucro)</span>
-                </span>
-                <i data-accordion-icon="detalhes" class="fa-solid fa-chevron-down text-gray-500 text-xs transition-transform"></i>
-            </button>
-            <div data-accordion-panel="detalhes" class="hidden px-4 py-4 space-y-4 border-t border-gray-800">
+            <div class="border-t border-gray-800 pt-5">
+                <label class="block text-xs uppercase font-semibold text-accent mb-3"><i class="fa-solid fa-truck"></i> Entrega</label>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Acabamento (HH:MM)</label>
-                        <input type="text" id="calc-tempo-acabamento" value="00:00" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
+                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">CEP</label>
+                        <div class="relative">
+                            <input type="text" id="calc-cliente-cep" placeholder="00000-000" maxlength="9" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 pr-9 text-sm focus:outline-none focus:border-accent font-mono">
+                            <i id="calc-cep-loading" class="fa-solid fa-spinner fa-spin hidden absolute right-3 top-1/2 -translate-y-1/2 text-accent text-xs"></i>
+                        </div>
+                        <p id="calc-cep-status" class="hidden text-[11px] mt-1"></p>
                     </div>
                     <div>
-                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Outros Custos Manuais (R$)</label>
-                        <input type="number" id="calc-outros" value="0" min="0" step="0.5" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Rua</label>
+                        <input type="text" id="calc-cliente-rua" placeholder="Preenchido automaticamente pelo CEP" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
                     </div>
                 </div>
 
-                <!-- Risco / Falha -->
-                <div>
-                    <div class="flex justify-between text-xs font-semibold text-gray-400 mb-1">
-                        <span>Risco / Falha de Impressão</span>
-                        <span id="label-risco" class="text-accent">5%</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Número</label>
+                        <input type="text" id="calc-cliente-numero" placeholder="Nº" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
                     </div>
-                    <input type="range" id="calc-risco" min="0" max="30" value="5" class="w-full accent-accent cursor-pointer">
-                </div>
-
-                <!-- Lucro Desejado -->
-                <div>
-                    <div class="flex justify-between text-xs font-semibold text-gray-400 mb-1">
-                        <span>Lucro Desejado (%)</span>
-                        <span id="label-lucro" class="text-accent">100%</span>
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Bairro</label>
+                        <input type="text" id="calc-cliente-bairro" placeholder="Bairro" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
                     </div>
-                    <input type="range" id="calc-lucro" min="0" max="500" value="100" class="w-full accent-accent cursor-pointer">
                 </div>
             </div>
         </div>
 
-        <!-- Accordion: Dados do Cliente -->
-        <div class="border border-gray-800 rounded-xl overflow-hidden">
-            <button type="button" data-accordion-toggle="cliente" class="w-full flex items-center justify-between px-4 py-3 bg-darkbg/50 hover:bg-darkbg text-left transition">
-                <span class="text-xs uppercase font-semibold text-gray-300 flex items-center space-x-2">
-                    <i class="fa-solid fa-user text-accent"></i>
-                    <span>Dados do Cliente (opcional)</span>
-                </span>
-                <i data-accordion-icon="cliente" class="fa-solid fa-chevron-down text-gray-500 text-xs transition-transform"></i>
-            </button>
-            <div data-accordion-panel="cliente" class="hidden px-4 py-4 space-y-4 border-t border-gray-800">
-                <div>
-                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome</label>
-                    <input type="text" id="calc-cliente-nome" placeholder="Nome do cliente" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+        <!-- Aba: Pagamento -->
+        <div data-tab-panel-calc="pagamento" class="hidden space-y-6">
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-2">Tipo de Pagamento</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button type="button" data-pagamento="Dinheiro" class="calc-pagamento-btn py-2.5 rounded-xl text-sm font-semibold border transition flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-money-bill-wave"></i><span>Dinheiro</span>
+                    </button>
+                    <button type="button" data-pagamento="Cartão" class="calc-pagamento-btn py-2.5 rounded-xl text-sm font-semibold border transition flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-credit-card"></i><span>Cartão</span>
+                    </button>
+                    <button type="button" data-pagamento="Pix" class="calc-pagamento-btn py-2.5 rounded-xl text-sm font-semibold border transition flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-qrcode"></i><span>Pix</span>
+                    </button>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Telefone</label>
-                        <input type="text" id="calc-cliente-telefone" placeholder="(00) 00000-0000" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Endereço</label>
-                        <input type="text" id="calc-cliente-endereco" placeholder="Endereço para entrega" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
-                    </div>
+                <input type="hidden" id="calc-pagamento-tipo" value="Pix">
+            </div>
+
+            <div>
+                <div class="flex justify-between text-xs font-semibold text-gray-400 mb-1">
+                    <span>Desconto Aplicado no Valor Total</span>
+                    <span id="label-desconto" class="text-accent">0%</span>
                 </div>
+                <input type="range" id="calc-desconto" min="0" max="100" value="0" class="w-full accent-accent cursor-pointer">
             </div>
         </div>
     </div>
@@ -186,14 +244,67 @@
                 <div class="bg-accent/10 border border-accent/20 rounded-2xl p-6 text-center space-y-2">
                     <span class="text-xs uppercase font-bold tracking-widest text-accent">Preço de Venda Sugerido</span>
                     <div id="res-preco-venda" class="text-3xl font-black text-white font-mono">R$ 0,00</div>
+                    <p id="res-desconto" class="hidden text-xs text-orange-300">Desconto de 0%: -R$ 0,00</p>
                     <p id="res-lucro-rs" class="text-xs text-gray-300">Lucro estimado: R$ 0,00</p>
                 </div>
             </div>
         </div>
 
-        <button id="calc-salvar-pedido" class="mt-6 w-full py-3.5 bg-accent hover:bg-accenthover text-darkbg font-bold rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-accent/20">
+        <div class="mt-6 grid grid-cols-2 gap-3">
+            <button id="calc-baixar-orcamento" class="py-3 bg-transparent border border-gray-700 hover:border-accent/50 text-gray-300 hover:text-accent text-sm font-semibold rounded-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-download"></i>
+                <span>Baixar Orçamento</span>
+            </button>
+            <button id="calc-whatsapp" class="py-3 bg-transparent border border-gray-700 hover:border-green-500/50 text-gray-300 hover:text-green-400 text-sm font-semibold rounded-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-brands fa-whatsapp"></i>
+                <span>Enviar WhatsApp</span>
+            </button>
+        </div>
+
+        <label class="mt-4 flex items-center space-x-2 text-xs text-gray-400 cursor-pointer select-none">
+            <input type="checkbox" id="calc-add-galeria" class="accent-accent w-3.5 h-3.5 rounded">
+            <span><i class="fa-solid fa-images text-accent"></i> Salvar este item na Galeria (produto de saída recorrente)</span>
+        </label>
+
+        <button id="calc-salvar-pedido" class="mt-3 w-full py-3.5 bg-accent hover:bg-accenthover text-darkbg font-bold rounded-xl transition flex items-center justify-center space-x-2 shadow-lg shadow-accent/20">
             <i class="fa-solid fa-floppy-disk"></i>
-            <span>Salvar no Acompanhamento</span>
+            <span id="calc-salvar-label">Criar Pedido</span>
         </button>
+    </div>
+</div>
+
+<div id="calc-modal-cliente" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-accent/30 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-user text-accent"></i>
+            <span>Dados do Cliente</span>
+        </h3>
+        <p id="calc-modal-cliente-mensagem" class="text-xs text-gray-400 leading-relaxed">
+            Para emitir o orçamento é necessário informar o nome do cliente.
+        </p>
+        <div>
+            <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome</label>
+            <input
+                id="calc-modal-cliente-input"
+                type="text"
+                placeholder="Nome do cliente"
+                autocomplete="off"
+                class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent"
+            />
+        </div>
+        <div id="calc-modal-cliente-telefone-wrap" class="hidden">
+            <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Telefone (WhatsApp)</label>
+            <input
+                id="calc-modal-cliente-telefone"
+                type="text"
+                placeholder="(00) 00000-0000"
+                autocomplete="off"
+                class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent"
+            />
+        </div>
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="calc-modal-cliente-cancelar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="calc-modal-cliente-confirmar" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover">Continuar</button>
+        </div>
     </div>
 </div>

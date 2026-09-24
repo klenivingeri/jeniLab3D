@@ -3,10 +3,11 @@ import { mountModalEstoque } from './components/modal-estoque/modal-estoque.js';
 import { mountCalculadoraPage } from './pages/calculadora/calculadora.js';
 import { mountAcompanhamentoPage } from './pages/acompanhamento/acompanhamento.js';
 import { mountHistoricoPage } from './pages/historico/historico.js';
+import { mountGaleriaPage } from './pages/galeria/galeria.js';
 import { mountEstoquePage } from './pages/estoque/estoque.js';
 import { mountAjustesPage } from './pages/ajustes/ajustes.js';
 
-const TAB_IDS = ['calc', 'acompanhamento', 'historico', 'estoque', 'ajustes'];
+const TAB_IDS = ['calc', 'galeria', 'acompanhamento', 'historico', 'estoque', 'ajustes'];
 
 const pageOutlet = document.querySelector('#page-outlet');
 const pageContainers = {};
@@ -23,6 +24,7 @@ function switchTab(tabId) {
     header.setActive(tabId);
 
     if (tabId === 'calc') calculadoraPage.refreshSelects();
+    if (tabId === 'galeria') galeriaPage.refresh();
     if (tabId === 'acompanhamento') acompanhamentoPage.refresh();
     if (tabId === 'historico') historicoPage.refresh();
     if (tabId === 'estoque') estoquePage.refresh();
@@ -45,6 +47,13 @@ function abrirPedidoNaCalculadora(pedido) {
     switchTab('calc');
     calculadoraPage.loadPedido(pedido);
 }
+
+const galeriaPage = mountGaleriaPage(pageContainers.galeria, {
+    onCriarPedido: (item) => {
+        switchTab('calc');
+        calculadoraPage.carregarModelo(item);
+    },
+});
 
 const acompanhamentoPage = mountAcompanhamentoPage(pageContainers.acompanhamento, {
     onSalvoHistorico: () => switchTab('historico'),

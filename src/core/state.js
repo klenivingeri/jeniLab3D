@@ -3,6 +3,7 @@ const STORAGE_KEYS = {
     estoque: 'zoom_estoque',
     pedidos: 'zoom_pedidos',
     historico: 'zoom_historico',
+    galeria: 'zoom_galeria',
 };
 
 const defaultConfig = {
@@ -30,6 +31,7 @@ export const state = {
     estoque: load(STORAGE_KEYS.estoque, defaultEstoque),
     pedidos: load(STORAGE_KEYS.pedidos, []),
     historico: load(STORAGE_KEYS.historico, []),
+    galeria: load(STORAGE_KEYS.galeria, []),
     insumosVinculados: [],
 };
 
@@ -47,6 +49,10 @@ export function savePedidos() {
 
 export function saveHistorico() {
     localStorage.setItem(STORAGE_KEYS.historico, JSON.stringify(state.historico));
+}
+
+export function saveGaleria() {
+    localStorage.setItem(STORAGE_KEYS.galeria, JSON.stringify(state.galeria));
 }
 
 export function clearPedidos() {
