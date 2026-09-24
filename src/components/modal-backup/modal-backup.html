@@ -1,0 +1,22 @@
+<div id="modal-backup" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center justify-between">
+            <span>Backup de Pedidos</span>
+            <button id="modal-backup-close" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </h3>
+        <p class="text-xs text-gray-400">Exporte todos os pedidos (em andamento e histórico de vendas) para um arquivo JSON, ou importe um backup existente. Pedidos com o mesmo horário de criação são atualizados; os demais são adicionados sem afetar os pedidos atuais.</p>
+        <div id="modal-backup-resultado" class="hidden text-xs rounded-xl px-3 py-2 border"></div>
+        <div class="grid grid-cols-1 gap-3 pt-2">
+            <button id="modal-backup-exportar" class="w-full px-4 py-2.5 bg-accent/10 border border-accent/30 text-accent rounded-xl text-sm font-semibold hover:bg-accent/20 transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-file-export"></i><span>Exportar Pedidos (JSON)</span>
+            </button>
+            <button id="modal-backup-importar" class="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 text-gray-200 rounded-xl text-sm font-semibold hover:bg-gray-700 transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-file-import"></i><span>Importar Pedidos (JSON)</span>
+            </button>
+            <input type="file" id="modal-backup-input" accept="application/json,.json" class="hidden">
+        </div>
+        <div class="flex justify-end pt-3 border-t border-gray-800">
+            <button id="modal-backup-fechar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Fechar</button>
+        </div>
+    </div>
+</div>

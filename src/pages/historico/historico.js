@@ -1,10 +1,18 @@
 import historicoHtml from './historico.html?raw';
 import { state, saveHistorico } from '../../core/state.js';
 
-export function mountHistoricoPage(container, { onAbrirPedido } = {}) {
+export function mountHistoricoPage(container, { onAbrirPedido, onAbrirBackup, onAbrirDashboard } = {}) {
     container.innerHTML = historicoHtml;
 
     const listaEl = container.querySelector('#lista-historico');
+
+    container.querySelector('#hist-abrir-backup').addEventListener('click', () => {
+        onAbrirBackup && onAbrirBackup();
+    });
+
+    container.querySelector('#hist-abrir-dash').addEventListener('click', () => {
+        onAbrirDashboard && onAbrirDashboard();
+    });
     const buscaEl = container.querySelector('#hist-busca-data');
     const modalExcluir = container.querySelector('#hist-modal-excluir');
     const modalTexto = container.querySelector('#hist-modal-texto');

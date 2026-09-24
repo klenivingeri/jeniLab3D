@@ -1,5 +1,5 @@
 import calculadoraHtml from './calculadora.html?raw';
-import { state, savePedidos, saveGaleria } from '../../core/state.js';
+import { state, savePedidos, saveGaleria, upsertClienteDoPedido } from '../../core/state.js';
 import { tempoParaHoras, formatBRL, custoPorKg, custoUnitario } from '../../core/utils.js';
 
 const TAB_ATIVA_CLASSES = ['text-accent', 'border-accent'];
@@ -29,6 +29,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         lucro: container.querySelector('#calc-lucro'),
         labelLucro: container.querySelector('#label-lucro'),
         clienteNome: container.querySelector('#calc-cliente-nome'),
+        clienteSugestoes: container.querySelector('#calc-cliente-sugestoes'),
         clienteTelefone: container.querySelector('#calc-cliente-telefone'),
         clienteCep: container.querySelector('#calc-cliente-cep'),
         clienteRua: container.querySelector('#calc-cliente-rua'),
@@ -230,6 +231,58 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         els.cepStatus.classList.add('hidden');
         if (digits.length === 8) buscarCep();
     });
+
+    // Autocomplete de clientes já cadastrados (via pedidos anteriores)
+    function esconderSugestoesCliente() {
+        els.clienteSugestoes.classList.add('hidden');
+        els.clienteSugestoes.innerHTML = '';
+    }
+
+    function selecionarClienteSugerido(cliente) {
+        els.clienteNome.value = cliente.nome;
+        els.clienteTelefone.value = cliente.telefone || '';
+        els.clienteCep.value = cliente.cep || '';
+        els.clienteRua.value = cliente.rua || '';
+        els.clienteNumero.value = cliente.numero || '';
+        els.clienteBairro.value = cliente.bairro || '';
+        esconderSugestoesCliente();
+        calcularOrcamento();
+    }
+
+    els.clienteNome.addEventListener('input', () => {
+        const termo = els.clienteNome.value.trim().toLowerCase();
+        if (!termo) {
+            esconderSugestoesCliente();
+            return;
+        }
+
+        const encontrados = state.clientes.filter((c) => c.nome.toLowerCase().includes(termo)).slice(0, 6);
+        if (encontrados.length === 0) {
+            esconderSugestoesCliente();
+            return;
+        }
+
+        els.clienteSugestoes.innerHTML = encontrados
+            .map(
+                (c, i) => `
+                    <button type="button" data-sugestao-cliente="${i}" class="w-full text-left px-4 py-2 text-sm text-gray-200 hover:bg-gray-800 transition">
+                        <span class="font-medium">${c.nome}</span>
+                        ${c.telefone ? `<span class="text-xs text-gray-500 ml-2">${c.telefone}</span>` : ''}
+                    </button>
+                `
+            )
+            .join('');
+        els.clienteSugestoes.classList.remove('hidden');
+
+        els.clienteSugestoes.querySelectorAll('[data-sugestao-cliente]').forEach((btn) => {
+            btn.addEventListener('mousedown', (evt) => {
+                evt.preventDefault();
+                selecionarClienteSugerido(encontrados[Number(btn.dataset.sugestaoCliente)]);
+            });
+        });
+    });
+
+    els.clienteNome.addEventListener('blur', esconderSugestoesCliente);
 
     function refreshSelects() {
         const filamentos = state.estoque.filter((i) => i.categoria === 'Filamento');
@@ -716,6 +769,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
             state.pedidos.unshift({ id: Date.now(), ...ultimoCalculo });
         }
         savePedidos();
+        upsertClienteDoPedido(ultimoCalculo);
 
         if (els.addGaleria.checked) {
             state.galeria.unshift({

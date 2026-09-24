@@ -1,0 +1,40 @@
+<div id="modal-cliente" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-gray-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center justify-between">
+            <span id="modal-cliente-titulo">Novo Cliente</span>
+            <button id="modal-cliente-close" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </h3>
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Nome</label>
+                <input type="text" id="mcli-nome" placeholder="Nome do cliente" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            </div>
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Telefone</label>
+                <input type="text" id="mcli-telefone" placeholder="(00) 00000-0000" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">CEP</label>
+                    <input type="text" id="mcli-cep" placeholder="00000-000" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Número</label>
+                    <input type="text" id="mcli-numero" placeholder="Nº" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Rua</label>
+                <input type="text" id="mcli-rua" placeholder="Rua" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            </div>
+            <div>
+                <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Bairro</label>
+                <input type="text" id="mcli-bairro" placeholder="Bairro" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-accent">
+            </div>
+        </div>
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="modal-cliente-cancel" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="modal-cliente-save" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover"><span id="modal-cliente-save-label">Salvar Cliente</span></button>
+        </div>
+    </div>
+</div>

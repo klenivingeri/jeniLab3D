@@ -3,8 +3,8 @@ import { state, savePedidos, saveHistorico } from '../../core/state.js';
 
 const COLUNAS = [
     { id: 'Aguardando', titulo: 'Aguardando', cor: 'border-yellow-500/30 text-yellow-400 bg-yellow-500/10' },
-    { id: 'Finalizado', titulo: 'Finalizado', cor: 'border-blue-500/30 text-blue-400 bg-blue-500/10' },
-    { id: 'Enviado', titulo: 'Enviado', cor: 'border-green-500/30 text-green-400 bg-green-500/10' },
+    { id: 'EmProcessamento', titulo: 'Em Processamento', cor: 'border-blue-500/30 text-blue-400 bg-blue-500/10' },
+    { id: 'Finalizado', titulo: 'Finalizado', cor: 'border-green-500/30 text-green-400 bg-green-500/10' },
 ];
 
 export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPedido } = {}) {
@@ -28,13 +28,11 @@ export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPe
                 <div class="flex justify-between items-center pt-2 border-t border-gray-800 text-xs">
                     <span class="text-gray-500">${p.data}</span>
                     <select data-status-pedido="${p.id}" draggable="false" class="bg-gray-800 border border-gray-700 text-white rounded px-2 py-1 text-xs focus:outline-none">
-                        <option value="Aguardando" ${p.status === 'Aguardando' ? 'selected' : ''}>Aguardando</option>
-                        <option value="Finalizado" ${p.status === 'Finalizado' ? 'selected' : ''}>Finalizado</option>
-                        <option value="Enviado" ${p.status === 'Enviado' ? 'selected' : ''}>Enviado</option>
+                        ${COLUNAS.map((col) => `<option value="${col.id}" ${p.status === col.id ? 'selected' : ''}>${col.titulo}</option>`).join('')}
                     </select>
                 </div>
                 ${
-                    p.status === 'Enviado'
+                    p.status === 'Finalizado'
                         ? `<button data-salvar-pedido="${p.id}" draggable="false" class="w-full px-3 py-1.5 bg-accent/10 border border-accent/30 text-accent rounded-lg text-xs font-semibold hover:bg-accent/20 transition flex items-center justify-center space-x-2"><i class="fa-solid fa-floppy-disk"></i><span>Salvar no Histórico</span></button>`
                         : ''
                 }
@@ -50,7 +48,7 @@ export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPe
                     <div class="flex flex-wrap items-center justify-between pb-3 border-b border-gray-800 mb-3 gap-2">
                         <span class="text-xs font-bold uppercase px-3 py-1 rounded-lg border ${col.cor}">${col.titulo}</span>
                         ${
-                            col.id === 'Enviado' && pedidosCol.length > 0
+                            col.id === 'Finalizado' && pedidosCol.length > 0
                                 ? `<button id="acomp-enviar-todos" class="text-xs px-2.5 py-1 bg-accent/10 border border-accent/30 text-accent rounded-lg font-semibold hover:bg-accent/20 transition flex items-center space-x-1.5"><i class="fa-solid fa-floppy-disk"></i><span>Salvar Todos no Histórico</span></button>`
                                 : ''
                         }
@@ -110,14 +108,14 @@ export function mountAcompanhamentoPage(container, { onSalvoHistorico, onAbrirPe
         if (btnEnviarTodos) {
             btnEnviarTodos.addEventListener('click', (evt) => {
                 evt.stopPropagation();
-                const enviados = state.pedidos.filter((p) => p.status === 'Enviado');
+                const enviados = state.pedidos.filter((p) => p.status === 'Finalizado');
                 if (enviados.length === 0) return;
 
                 const agora = new Date().toLocaleDateString('pt-BR');
                 state.historico.unshift(...enviados.map((p) => ({ ...p, dataEnvio: agora })));
                 saveHistorico();
 
-                state.pedidos = state.pedidos.filter((p) => p.status !== 'Enviado');
+                state.pedidos = state.pedidos.filter((p) => p.status !== 'Finalizado');
                 savePedidos();
 
                 render();

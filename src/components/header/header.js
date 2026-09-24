@@ -15,7 +15,7 @@ export function mountHeader(container, onTabChange) {
         mobileMenu.classList.remove('flex');
     }
 
-    mobileMenuBtn.addEventListener('click', () => {
+    mobileMenuBtn?.addEventListener('click', () => {
         const abrindo = mobileMenu.classList.contains('hidden');
         mobileMenu.classList.toggle('hidden', !abrindo);
         mobileMenu.classList.toggle('flex', abrindo);

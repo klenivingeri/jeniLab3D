@@ -1,0 +1,41 @@
+<div class="space-y-6">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-darkcard border border-gray-800 rounded-2xl p-6">
+        <div>
+            <h2 class="text-xl font-bold flex items-center space-x-2">
+                <i class="fa-solid fa-address-book text-accent"></i>
+                <span>CLIENTES</span>
+            </h2>
+            <p class="text-xs text-gray-400 mt-1">Cadastrados automaticamente a partir dos pedidos. Use a busca por nome no pedido para reaproveitar os dados.</p>
+        </div>
+        <button id="clientes-novo" class="px-4 py-2 bg-accent hover:bg-accenthover text-darkbg font-bold rounded-xl text-xs transition flex items-center space-x-2 shadow-lg shadow-accent/20">
+            <i class="fa-solid fa-plus"></i><span>Novo Cliente</span>
+        </button>
+    </div>
+
+    <div id="tabela-clientes-container" class="bg-darkcard border border-gray-800 rounded-2xl overflow-hidden shadow-xl">
+        <!-- Tabela de clientes injetada via JS -->
+    </div>
+</div>
+
+<div id="clientes-modal-excluir" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-red-500/30 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
+            <span>Excluir cliente</span>
+        </h3>
+        <p class="text-xs text-gray-400 leading-relaxed">
+            Essa ação é permanente e não afeta os pedidos já salvos, apenas remove o cliente da lista. Para confirmar, digite <strong class="text-red-400">DELETAR</strong> no campo abaixo.
+        </p>
+        <input
+            id="clientes-confirma-input"
+            type="text"
+            placeholder="Digite DELETAR"
+            autocomplete="off"
+            class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-red-400"
+        />
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="clientes-modal-cancelar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="clientes-modal-confirmar" disabled class="px-4 py-2 bg-red-500/30 text-red-300 font-bold rounded-xl text-xs cursor-not-allowed transition">Confirmar Exclusão</button>
+        </div>
+    </div>
+</div>

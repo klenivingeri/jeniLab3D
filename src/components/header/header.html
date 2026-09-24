@@ -16,7 +16,10 @@
                 <i class="fa-solid fa-clock-rotate-left"></i><span>ACOMPANHAMENTO</span>
             </button>
             <button data-tab="historico" id="btn-historico" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
-                <i class="fa-solid fa-box-archive"></i><span>PEDIDOS</span>
+                <i class="fa-solid fa-box-archive"></i><span>HISTÓRICO</span>
+            </button>
+            <button data-tab="clientes" id="btn-clientes" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+                <i class="fa-solid fa-address-book"></i><span>CLIENTES</span>
             </button>
             <button data-tab="estoque" id="btn-estoque" class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
                 <i class="fa-solid fa-boxes-stacked"></i><span>ESTOQUE</span>
@@ -25,13 +28,6 @@
                 <i class="fa-solid fa-gear"></i><span>AJUSTES</span>
             </button>
         </nav>
-
-        <div class="flex items-center space-x-2 sm:space-x-3">
-            <span class="hidden sm:inline text-xs px-3 py-1 rounded bg-gray-800 text-gray-300 border border-gray-700 font-mono">BR BRL (R$)</span>
-            <button id="mobile-menu-btn" class="md:hidden w-10 h-10 flex items-center justify-center rounded-lg text-gray-300 hover:bg-gray-800 transition" aria-label="Abrir menu">
-                <i class="fa-solid fa-bars text-lg"></i>
-            </button>
-        </div>
     </div>
 
     <nav id="mobile-menu" class="md:hidden hidden flex-col border-t border-gray-800 bg-darkcard/95 px-4 py-3 space-y-1">
@@ -46,6 +42,9 @@
         </button>
         <button data-tab="historico" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
             <i class="fa-solid fa-box-archive w-4"></i><span>PEDIDOS</span>
+        </button>
+        <button data-tab="clientes" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
+            <i class="fa-solid fa-address-book w-4"></i><span>CLIENTES</span>
         </button>
         <button data-tab="estoque" class="tab-btn w-full px-4 py-3 rounded-lg text-sm font-medium transition flex items-center space-x-2 text-gray-400 hover:text-white hover:bg-gray-800">
             <i class="fa-solid fa-boxes-stacked w-4"></i><span>ESTOQUE</span>
