@@ -1,6 +1,6 @@
 import calculadoraHtml from './calculadora.html?raw';
 import { state, savePedidos, saveGaleria, upsertClienteDoPedido } from '../../core/state.js';
-import { tempoParaHoras, formatBRL, custoPorKg, custoUnitario } from '../../core/utils.js';
+import { tempoParaHoras, bindTempoMask, formatBRL, custoPorKg, custoUnitario } from '../../core/utils.js';
 
 const TAB_ATIVA_CLASSES = ['text-accent', 'border-accent'];
 const TAB_INATIVA_CLASSES = ['text-gray-400', 'border-transparent', 'hover:text-gray-300'];
@@ -66,6 +66,9 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         modalClienteConfirmar: container.querySelector('#calc-modal-cliente-confirmar'),
         modalClienteCancelar: container.querySelector('#calc-modal-cliente-cancelar'),
     };
+
+    const maskTempo = bindTempoMask(els.tempo, () => calcularOrcamento());
+    const maskTempoAcabamento = bindTempoMask(els.tempoAcabamento, () => calcularOrcamento());
 
     const pagamentoBtns = Array.from(container.querySelectorAll('[data-pagamento]'));
 
@@ -460,8 +463,8 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         els.nome.value = '';
         els.qtd.value = '1';
         els.peso.value = '0';
-        els.tempo.value = '00:00';
-        els.tempoAcabamento.value = '00:00';
+        maskTempo.setValue('00:00');
+        maskTempoAcabamento.setValue('00:00');
         els.outros.value = '0';
         els.risco.value = '5';
         els.labelRisco.innerText = '5%';
@@ -493,8 +496,8 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         els.nome.value = pedido.nome || '';
         els.qtd.value = pedido.qtd || 1;
         els.peso.value = pedido.peso || 0;
-        els.tempo.value = pedido.tempo || '00:00';
-        els.tempoAcabamento.value = pedido.tempoAcabamento || '00:00';
+        maskTempo.setValue(pedido.tempo || '00:00');
+        maskTempoAcabamento.setValue(pedido.tempoAcabamento || '00:00');
         els.custoKg.value = pedido.custoKg ?? state.config.custoKgPadrao;
         els.outros.value = pedido.outros ?? 0;
         els.risco.value = pedido.risco ?? 5;
@@ -538,8 +541,8 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         els.nome.value = item.nome || '';
         els.qtd.value = item.qtd || 1;
         els.peso.value = item.peso || 0;
-        els.tempo.value = item.tempo || '00:00';
-        els.tempoAcabamento.value = item.tempoAcabamento || '00:00';
+        maskTempo.setValue(item.tempo || '00:00');
+        maskTempoAcabamento.setValue(item.tempoAcabamento || '00:00');
         els.custoKg.value = item.custoKg ?? state.config.custoKgPadrao;
         els.outros.value = item.outros ?? 0;
         els.risco.value = item.risco ?? 5;
@@ -574,7 +577,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
     }
 
     // Eventos
-    [els.qtd, els.peso, els.tempo, els.custoKg, els.tempoAcabamento, els.outros, els.nome].forEach((input) => {
+    [els.qtd, els.peso, els.custoKg, els.outros, els.nome].forEach((input) => {
         input.addEventListener('input', calcularOrcamento);
     });
 

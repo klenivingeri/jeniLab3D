@@ -142,6 +142,7 @@ export function mountDashboardPage(container, { onVoltar } = {}) {
     const periodosEl = container.querySelector('#dash-periodos');
     const qtdPedidosEl = container.querySelector('#dash-qtd-pedidos');
     const valorTotalEl = container.querySelector('#dash-valor-total');
+    const valorTotalToggleEl = container.querySelector('#dash-valor-total-toggle');
     const produtoTopEl = container.querySelector('#dash-produto-top');
     const produtoTopQtdEl = container.querySelector('#dash-produto-top-qtd');
     const vazioEl = container.querySelector('#dash-vazio');
@@ -160,6 +161,18 @@ export function mountDashboardPage(container, { onVoltar } = {}) {
     let chartHoras = null;
     let chartProdutos = null;
     let chartClientes = null;
+    let valorTotalOculto = true;
+    let valorTotalAtual = 0;
+
+    function renderValorTotal() {
+        valorTotalEl.innerText = valorTotalOculto ? '••••••' : formatBRL(valorTotalAtual);
+        valorTotalToggleEl.querySelector('i').className = `fa-solid ${valorTotalOculto ? 'fa-eye-slash' : 'fa-eye'}`;
+    }
+
+    valorTotalToggleEl.addEventListener('click', () => {
+        valorTotalOculto = !valorTotalOculto;
+        renderValorTotal();
+    });
 
     function renderBotoesPeriodo() {
         periodosEl.innerHTML = getPeriodos()
@@ -200,8 +213,8 @@ export function mountDashboardPage(container, { onVoltar } = {}) {
 
         qtdPedidosEl.innerText = filtrados.length;
 
-        const valorTotal = filtrados.reduce((soma, p) => soma + (p.custoTotal || 0), 0);
-        valorTotalEl.innerText = formatBRL(valorTotal);
+        valorTotalAtual = filtrados.reduce((soma, p) => soma + (p.custoTotal || 0), 0);
+        renderValorTotal();
 
         const qtdPorProduto = {};
         const valorPorCliente = {};
