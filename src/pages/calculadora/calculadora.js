@@ -1,6 +1,6 @@
 import calculadoraHtml from './calculadora.html?raw';
 import { state, savePedidos, saveGaleria, upsertClienteDoPedido } from '../../core/state.js';
-import { tempoParaHoras, bindTempoMask, formatBRL, custoPorKg, custoUnitario } from '../../core/utils.js';
+import { tempoParaHoras, bindTempoMask, bindDecimalMask, formatBRL, custoPorKg, custoUnitario } from '../../core/utils.js';
 
 const TAB_ATIVA_CLASSES = ['text-accent', 'border-accent'];
 const TAB_INATIVA_CLASSES = ['text-gray-400', 'border-transparent', 'hover:text-gray-300'];
@@ -17,12 +17,14 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         qtd: container.querySelector('#calc-qtd'),
         peso: container.querySelector('#calc-peso'),
         tempo: container.querySelector('#calc-tempo'),
+        tempoAbrirTeclado: container.querySelector('#calc-tempo-abrir-teclado'),
         filamentoSelect: container.querySelector('#calc-filamento-select'),
         custoKg: container.querySelector('#calc-custo-kg'),
         insumoSelect: container.querySelector('#calc-insumo-select'),
         insumoQtd: container.querySelector('#calc-insumo-qtd'),
         listaInsumos: container.querySelector('#lista-insumos-vinculados'),
         tempoAcabamento: container.querySelector('#calc-tempo-acabamento'),
+        tempoAcabamentoAbrirTeclado: container.querySelector('#calc-tempo-acabamento-abrir-teclado'),
         outros: container.querySelector('#calc-outros'),
         risco: container.querySelector('#calc-risco'),
         labelRisco: container.querySelector('#label-risco'),
@@ -65,10 +67,20 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         modalClienteTelefoneInput: container.querySelector('#calc-modal-cliente-telefone'),
         modalClienteConfirmar: container.querySelector('#calc-modal-cliente-confirmar'),
         modalClienteCancelar: container.querySelector('#calc-modal-cliente-cancelar'),
+        modalTempo: container.querySelector('#calc-modal-tempo'),
+        modalTempoClose: container.querySelector('#calc-modal-tempo-close'),
+        modalTempoDisplay: container.querySelector('#calc-modal-tempo-display'),
+        modalTempoHoras: container.querySelector('[data-tempo-segmento="horas"]'),
+        modalTempoMinutos: container.querySelector('[data-tempo-segmento="minutos"]'),
+        modalTempoLimpar: container.querySelector('#calc-modal-tempo-limpar'),
+        modalTempoBackspace: container.querySelector('#calc-modal-tempo-backspace'),
+        modalTempoCancelar: container.querySelector('#calc-modal-tempo-cancelar'),
+        modalTempoConfirmar: container.querySelector('#calc-modal-tempo-confirmar'),
     };
 
     const maskTempo = bindTempoMask(els.tempo, () => calcularOrcamento());
     const maskTempoAcabamento = bindTempoMask(els.tempoAcabamento, () => calcularOrcamento());
+    const maskPeso = bindDecimalMask(els.peso, () => calcularOrcamento());
 
     const pagamentoBtns = Array.from(container.querySelectorAll('[data-pagamento]'));
 
@@ -84,12 +96,14 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         els.qtd,
         els.peso,
         els.tempo,
+        els.tempoAbrirTeclado,
         els.filamentoSelect,
         els.custoKg,
         els.insumoSelect,
         els.insumoQtd,
         els.addInsumoBtn,
         els.tempoAcabamento,
+        els.tempoAcabamentoAbrirTeclado,
         els.outros,
         els.risco,
         els.lucro,
@@ -337,7 +351,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
     function calcularValores() {
         const nome = els.nome.value || 'Modelo Sem Nome';
         const qtd = parseInt(els.qtd.value, 10) || 1;
-        const peso = parseFloat(els.peso.value) || 0;
+        const peso = maskPeso.getValue();
         const tempoHoras = tempoParaHoras(els.tempo.value);
         const custoKg = Number.isNaN(parseFloat(els.custoKg.value)) ? 100 : parseFloat(els.custoKg.value);
         const tempoAcabamentoHoras = tempoParaHoras(els.tempoAcabamento.value);
@@ -462,7 +476,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         setTabCalc('pedido');
         els.nome.value = '';
         els.qtd.value = '1';
-        els.peso.value = '0';
+        maskPeso.setValue(0);
         maskTempo.setValue('00:00');
         maskTempoAcabamento.setValue('00:00');
         els.outros.value = '0';
@@ -495,7 +509,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         setTabCalc('pedido');
         els.nome.value = pedido.nome || '';
         els.qtd.value = pedido.qtd || 1;
-        els.peso.value = pedido.peso || 0;
+        maskPeso.setValue(pedido.peso || 0);
         maskTempo.setValue(pedido.tempo || '00:00');
         maskTempoAcabamento.setValue(pedido.tempoAcabamento || '00:00');
         els.custoKg.value = pedido.custoKg ?? state.config.custoKgPadrao;
@@ -540,7 +554,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
 
         els.nome.value = item.nome || '';
         els.qtd.value = item.qtd || 1;
-        els.peso.value = item.peso || 0;
+        maskPeso.setValue(item.peso || 0);
         maskTempo.setValue(item.tempo || '00:00');
         maskTempoAcabamento.setValue(item.tempoAcabamento || '00:00');
         els.custoKg.value = item.custoKg ?? state.config.custoKgPadrao;
@@ -577,7 +591,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
     }
 
     // Eventos
-    [els.qtd, els.peso, els.custoKg, els.outros, els.nome].forEach((input) => {
+    [els.qtd, els.custoKg, els.outros, els.nome].forEach((input) => {
         input.addEventListener('input', calcularOrcamento);
     });
 
@@ -662,7 +676,7 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
             piscarErro(els.nome);
             valido = false;
         }
-        if (!(parseFloat(els.peso.value) > 0)) {
+        if (!(maskPeso.getValue() > 0)) {
             piscarErro(els.peso);
             valido = false;
         }
@@ -725,6 +739,113 @@ export function mountCalculadoraPage(container, { onGotoEstoque, onPedidoSalvo }
         input.addEventListener('keydown', (evt) => {
             if (evt.key === 'Enter') confirmarModalCliente();
         });
+    });
+
+    // Modal "teclado de horário": teclado numérico para digitar HH:MM em telas touch, aberto
+    // pelo ícone de relógio ao lado dos campos de tempo. Reaproveita as máscaras já criadas.
+    let modalTempoAlvo = null;
+    let modalTempoDigitos = ['0', '0', '0', '0'];
+    let modalTempoSegmentoAtivo = 'horas';
+    let modalTempoContagem = 0;
+
+    function renderModalTempo() {
+        els.modalTempoHoras.textContent = modalTempoDigitos[0] + modalTempoDigitos[1];
+        els.modalTempoMinutos.textContent = modalTempoDigitos[2] + modalTempoDigitos[3];
+        const ativoClasses = ['bg-accent/20', 'text-accent'];
+        ativoClasses.forEach((c) => els.modalTempoHoras.classList.toggle(c, modalTempoSegmentoAtivo === 'horas'));
+        ativoClasses.forEach((c) => els.modalTempoMinutos.classList.toggle(c, modalTempoSegmentoAtivo === 'minutos'));
+    }
+
+    function selecionarSegmentoModalTempo(segmento) {
+        modalTempoSegmentoAtivo = segmento;
+        modalTempoContagem = 0;
+        renderModalTempo();
+    }
+
+    function abrirModalTempo(mask, valorAtual) {
+        modalTempoAlvo = mask;
+        const brutos = (valorAtual || '').replace(/\D/g, '').padStart(4, '0').slice(-4);
+        modalTempoDigitos = brutos.split('');
+        selecionarSegmentoModalTempo('horas');
+        els.modalTempo.classList.remove('hidden');
+        els.modalTempo.classList.add('flex');
+    }
+
+    function fecharModalTempo() {
+        els.modalTempo.classList.remove('flex');
+        els.modalTempo.classList.add('hidden');
+        modalTempoAlvo = null;
+    }
+
+    function digitarModalTempo(digito) {
+        // Horas vão até 24 (não 23) porque este campo representa duração (ex: "24:00" de
+        // impressão contínua), não um horário do relógio — mesmo limite do bindTempoMask.
+        const [indiceDezena, indiceUnidade, max] =
+            modalTempoSegmentoAtivo === 'horas' ? [0, 1, 24] : [2, 3, 59];
+
+        if (modalTempoContagem === 0) {
+            modalTempoDigitos[indiceDezena] = digito;
+            modalTempoDigitos[indiceUnidade] = '0';
+        } else {
+            modalTempoDigitos[indiceUnidade] = digito;
+        }
+
+        let valor = parseInt(modalTempoDigitos[indiceDezena] + modalTempoDigitos[indiceUnidade], 10);
+        if (valor > max) {
+            modalTempoDigitos[indiceDezena] = String(max)[0];
+            modalTempoDigitos[indiceUnidade] = String(max)[1];
+        }
+
+        modalTempoContagem += 1;
+        if (modalTempoContagem >= 2) {
+            if (modalTempoSegmentoAtivo === 'horas') selecionarSegmentoModalTempo('minutos');
+            else modalTempoContagem = 0;
+        }
+        renderModalTempo();
+    }
+
+    function apagarModalTempo() {
+        if (modalTempoContagem === 0 && modalTempoSegmentoAtivo === 'minutos') {
+            selecionarSegmentoModalTempo('horas');
+            modalTempoContagem = 2;
+            return;
+        }
+        const [indiceDezena, indiceUnidade] = modalTempoSegmentoAtivo === 'horas' ? [0, 1] : [2, 3];
+        if (modalTempoContagem >= 2) {
+            modalTempoDigitos[indiceUnidade] = '0';
+            modalTempoContagem = 1;
+        } else {
+            modalTempoDigitos[indiceDezena] = '0';
+            modalTempoContagem = 0;
+        }
+        renderModalTempo();
+    }
+
+    els.tempoAbrirTeclado.addEventListener('click', () => abrirModalTempo(maskTempo, els.tempo.value));
+    els.tempoAcabamentoAbrirTeclado.addEventListener('click', () =>
+        abrirModalTempo(maskTempoAcabamento, els.tempoAcabamento.value)
+    );
+
+    els.modalTempoHoras.addEventListener('click', () => selecionarSegmentoModalTempo('horas'));
+    els.modalTempoMinutos.addEventListener('click', () => selecionarSegmentoModalTempo('minutos'));
+
+    container.querySelectorAll('[data-tempo-tecla]').forEach((btn) => {
+        btn.addEventListener('click', () => digitarModalTempo(btn.dataset.tempoTecla));
+    });
+
+    els.modalTempoBackspace.addEventListener('click', apagarModalTempo);
+    els.modalTempoLimpar.addEventListener('click', () => {
+        modalTempoDigitos = ['0', '0', '0', '0'];
+        selecionarSegmentoModalTempo('horas');
+    });
+
+    els.modalTempoClose.addEventListener('click', fecharModalTempo);
+    els.modalTempoCancelar.addEventListener('click', fecharModalTempo);
+    els.modalTempoConfirmar.addEventListener('click', () => {
+        if (!modalTempoAlvo) return;
+        modalTempoAlvo.setValue(modalTempoDigitos.join(''));
+        fecharModalTempo();
+        calcularOrcamento();
     });
 
     // Nome (sempre) e telefone (apenas para WhatsApp) só são exigidos na hora de EMITIR o orçamento,

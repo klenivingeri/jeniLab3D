@@ -40,11 +40,16 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Peso da Peça (g)</label>
-                    <input type="number" id="calc-peso" value="0" min="0" step="0.1" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent">
+                    <input type="text" id="calc-peso" value="0,00" inputmode="decimal" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm font-mono focus:outline-none focus:border-accent">
                 </div>
                 <div>
                     <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Impressão (HH:MM)</label>
-                    <input type="text" id="calc-tempo" value="00:00" placeholder="00:00" maxlength="5" inputmode="numeric" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
+                    <div class="relative">
+                        <input type="text" id="calc-tempo" value="00:00" placeholder="00:00" maxlength="5" inputmode="numeric" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-accent font-mono">
+                        <button type="button" id="calc-tempo-abrir-teclado" tabindex="-1" class="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-accent transition">
+                            <i class="fa-regular fa-clock"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -100,7 +105,12 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Tempo de Acabamento (HH:MM)</label>
-                            <input type="text" id="calc-tempo-acabamento" value="00:00" maxlength="5" inputmode="numeric" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-accent font-mono">
+                            <div class="relative">
+                                <input type="text" id="calc-tempo-acabamento" value="00:00" maxlength="5" inputmode="numeric" class="w-full bg-darkbg border border-gray-700 rounded-xl px-4 py-2.5 pr-10 text-sm focus:outline-none focus:border-accent font-mono">
+                                <button type="button" id="calc-tempo-acabamento-abrir-teclado" tabindex="-1" class="absolute right-1 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-accent transition">
+                                    <i class="fa-regular fa-clock"></i>
+                                </button>
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs uppercase font-semibold text-gray-400 mb-1">Outros Custos Manuais (R$)</label>
@@ -308,6 +318,42 @@
         <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
             <button id="calc-modal-cliente-cancelar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
             <button id="calc-modal-cliente-confirmar" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover">Continuar</button>
+        </div>
+    </div>
+</div>
+
+<div id="calc-modal-tempo" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-darkcard border border-accent/30 rounded-2xl w-full max-w-xs p-6 space-y-4 shadow-2xl">
+        <h3 class="text-lg font-bold text-white flex items-center justify-between">
+            <span class="flex items-center space-x-2">
+                <i class="fa-regular fa-clock text-accent"></i>
+                <span>Selecionar Horário</span>
+            </span>
+            <button id="calc-modal-tempo-close" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </h3>
+
+        <div id="calc-modal-tempo-display" class="text-center font-mono text-3xl font-bold tracking-widest bg-darkbg border border-gray-700 rounded-xl py-3">
+            <span data-tempo-segmento="horas" class="cursor-pointer px-1 rounded transition">00</span><span class="text-gray-500">:</span><span data-tempo-segmento="minutos" class="cursor-pointer px-1 rounded transition">00</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+            <button data-tempo-tecla="1" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">1</button>
+            <button data-tempo-tecla="2" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">2</button>
+            <button data-tempo-tecla="3" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">3</button>
+            <button data-tempo-tecla="4" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">4</button>
+            <button data-tempo-tecla="5" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">5</button>
+            <button data-tempo-tecla="6" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">6</button>
+            <button data-tempo-tecla="7" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">7</button>
+            <button data-tempo-tecla="8" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">8</button>
+            <button data-tempo-tecla="9" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">9</button>
+            <button id="calc-modal-tempo-limpar" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-red-400 text-sm font-bold transition">C</button>
+            <button data-tempo-tecla="0" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg font-semibold transition">0</button>
+            <button id="calc-modal-tempo-backspace" class="py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-lg transition"><i class="fa-solid fa-delete-left"></i></button>
+        </div>
+
+        <div class="flex justify-end space-x-3 pt-3 border-t border-gray-800">
+            <button id="calc-modal-tempo-cancelar" class="px-4 py-2 bg-gray-800 text-gray-300 rounded-xl text-xs font-semibold hover:bg-gray-700">Cancelar</button>
+            <button id="calc-modal-tempo-confirmar" class="px-4 py-2 bg-accent text-darkbg font-bold rounded-xl text-xs hover:bg-accenthover">Aplicar</button>
         </div>
     </div>
 </div>

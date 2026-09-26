@@ -53,6 +53,21 @@ export function bindTempoMask(inputEl, aoAlterar) {
         inputEl.setSelectionRange(pos, pos);
     }
 
+    // Seleciona o segmento inteiro (as duas horas ou os dois minutos), como um campo de
+    // data/hora nativo: destaca o par de dígitos para que a próxima tecla já sobrescreva os dois.
+    function selecionarSegmento(indiceInicial) {
+        inputEl.setSelectionRange(POSICAO_DIGITO[indiceInicial], POSICAO_DIGITO[indiceInicial + 1] + 1);
+    }
+
+    inputEl.addEventListener('focus', () => selecionarSegmento(0));
+
+    inputEl.addEventListener('mouseup', (evt) => {
+        // Evita que o mouseup padrão desfaça a seleção do segmento que acabamos de aplicar.
+        evt.preventDefault();
+        const gap = digitoNaPosicaoCursor(inputEl.selectionStart) < 2 ? 0 : 2;
+        selecionarSegmento(gap);
+    });
+
     inputEl.addEventListener('keydown', (evt) => {
         if (evt.ctrlKey || evt.metaKey || evt.altKey) return;
 
@@ -61,13 +76,18 @@ export function bindTempoMask(inputEl, aoAlterar) {
             const indice = digitoNaPosicaoCursor(inputEl.selectionStart);
             digitos[indice] = evt.key;
             render();
-            moverCursorApos(indice);
+            if (indice === 1) selecionarSegmento(2);
+            else moverCursorApos(indice);
             aoAlterar();
             return;
         }
 
         if (evt.key === 'Backspace' || evt.key === 'Delete') {
             evt.preventDefault();
+            if (inputEl.selectionStart === POSICAO_DIGITO[2] && inputEl.selectionStart === inputEl.selectionEnd) {
+                selecionarSegmento(0);
+                return;
+            }
             const indice = digitoAntesDoCursor(inputEl.selectionStart);
             if (indice === null) return;
             digitos[indice] = '0';
@@ -104,6 +124,78 @@ export function bindTempoMask(inputEl, aoAlterar) {
         setValue(valor) {
             const brutos = (valor || '').replace(/\D/g, '').padEnd(4, '0').slice(0, 4);
             digitos = brutos.split('');
+            render();
+        },
+    };
+}
+
+// Liga um <input> de texto a uma máscara decimal estilo "valor monetário": os dígitos digitados
+// entram sempre pela direita, os 2 últimos são a parte decimal (depois da vírgula) e o resto é a
+// parte inteira com separador de milhar (ponto) — igual ao campo de valor de qualquer banco/loja.
+// Clicar no campo seleciona o valor todo, pronto pra sobrescrever digitando (00 → 0,00 → 00,00 →
+// 000,00 → 1.000,00 ...).
+export function bindDecimalMask(inputEl, aoAlterar) {
+    let centesimos = 0;
+
+    function formatar(valor) {
+        const inteiro = Math.floor(valor / 100);
+        const decimal = String(valor % 100).padStart(2, '0');
+        return `${inteiro.toLocaleString('pt-BR')},${decimal}`;
+    }
+
+    function render() {
+        inputEl.value = formatar(centesimos);
+    }
+
+    inputEl.addEventListener('focus', () => inputEl.select());
+
+    inputEl.addEventListener('mouseup', (evt) => {
+        // Evita que o mouseup padrão desfaça a seleção total que acabamos de aplicar no focus.
+        evt.preventDefault();
+        inputEl.select();
+    });
+
+    inputEl.addEventListener('keydown', (evt) => {
+        if (evt.ctrlKey || evt.metaKey || evt.altKey) return;
+
+        if (/^[0-9]$/.test(evt.key)) {
+            evt.preventDefault();
+            centesimos = Math.min(centesimos * 10 + Number(evt.key), Number.MAX_SAFE_INTEGER);
+            render();
+            aoAlterar();
+            return;
+        }
+
+        if (evt.key === 'Backspace' || evt.key === 'Delete') {
+            evt.preventDefault();
+            centesimos = Math.floor(centesimos / 10);
+            render();
+            aoAlterar();
+            return;
+        }
+
+        const teclasPermitidas = ['Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End', 'Shift'];
+        if (!teclasPermitidas.includes(evt.key)) evt.preventDefault();
+    });
+
+    inputEl.addEventListener('paste', (evt) => {
+        evt.preventDefault();
+        const texto = (evt.clipboardData || window.clipboardData).getData('text');
+        const digitos = texto.replace(/\D/g, '');
+        if (!digitos) return;
+        centesimos = Number(digitos);
+        render();
+        aoAlterar();
+    });
+
+    render();
+
+    return {
+        getValue() {
+            return centesimos / 100;
+        },
+        setValue(valor) {
+            centesimos = Math.round((Number(valor) || 0) * 100);
             render();
         },
     };
